@@ -5,9 +5,13 @@ import com.blog.api.payloads.UserDTO;
 import com.blog.api.repository.UserRepository;
 import com.blog.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import  com.blog.api.exceptions.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -22,23 +26,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO user, Integer userId) {
-        return null;
+    public UserDTO updateUser(UserDTO userDTO, Integer userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User"," id ", userId));
+
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setAbout(userDTO.getAbout());
+
+        User updateUser = userRepository.save(user);
+        return userToDto(updateUser);
     }
 
     @Override
     public UserDTO getUserById(Integer userId) {
-        return null;
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", " id ", userId));
+
+        return userToDto(user);
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
-        return null;
+        List<User> users = userRepository.findAll();
+
+        return users.stream().map(this::userToDto).collect(Collectors.toList());
     }
 
     @Override
     public void deleteUser(Integer userId) {
-
+       User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(" User ", " Id ", userId));
+       userRepository.delete(user);
     }
 
     private User dtoToUser(UserDTO userDTO){
