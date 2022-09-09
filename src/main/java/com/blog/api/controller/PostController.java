@@ -1,7 +1,9 @@
 package com.blog.api.controller;
 
+import com.blog.api.config.Constants;
 import com.blog.api.payloads.ApiResponse;
 import com.blog.api.payloads.PostDTO;
+import com.blog.api.payloads.PostResponse;
 import com.blog.api.repository.PostRepository;
 import com.blog.api.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +43,11 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDTO>> getAllPosts(){
-        List<PostDTO> allPost = postService.getAllPost();
+    public ResponseEntity<PostResponse> getAllPosts( @RequestParam(value = "pageNumber",defaultValue = Constants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                     @RequestParam(value = "pageSize",defaultValue = Constants.PAGE_SIZE,required = false) Integer pageSize,
+                                                     @RequestParam(value = "sortBy",defaultValue = Constants.SORT_BY,required = false) String sortBy,
+                                                     @RequestParam(value = "sortDirection",defaultValue = Constants.SORT_DIRECTION,required = false) String sortDirection){
+        PostResponse allPost = postService.getAllPost(pageNumber,pageSize,sortBy,sortDirection);
         return new ResponseEntity<>(allPost,HttpStatus.OK);
     }
 
@@ -62,6 +67,12 @@ public class PostController {
     public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO, @PathVariable Integer postId){
         PostDTO updatedPost = postService.updatePost(postDTO, postId);
         return new ResponseEntity<>(updatedPost,HttpStatus.OK);
+    }
+
+    @GetMapping("/posts/search/{keyword}")
+    public ResponseEntity<List<PostDTO>> searchPostByTitle(@PathVariable("keyword") String keyword){
+        List<PostDTO> posts = postService.searchPosts(keyword);
+        return new ResponseEntity<>(posts,HttpStatus.OK);
     }
 
 }
