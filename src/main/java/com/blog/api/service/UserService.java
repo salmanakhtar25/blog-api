@@ -1,10 +1,13 @@
 package com.blog.api.service;
 
+
 import com.blog.api.payloads.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
+
+    UserDTO registerNewUser(UserDTO userDTO);
 
     UserDTO createUser(UserDTO user);
 

@@ -31,4 +31,10 @@ public class GlobalExceptionHandler {
         });
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ApiResponse> apiExceptionHandler(ResourceNotFoundException rx){
+        String message = rx.getMessage();
+        return new ResponseEntity<>(new ApiResponse(message,true), HttpStatus.BAD_REQUEST);
+    }
 }
