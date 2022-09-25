@@ -1,8 +1,8 @@
 package com.blog.api.service.impl;
 
 import com.blog.api.config.Constants;
+import com.blog.api.entities.Blogger;
 import com.blog.api.entities.Role;
-import com.blog.api.entities.User;
 import com.blog.api.payloads.UserDTO;
 import com.blog.api.repository.RoleRepository;
 import com.blog.api.repository.UserRepository;
@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,62 +33,62 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO registerNewUser(UserDTO userDTO) {
-        User user = modelMapper.map(userDTO, User.class);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Blogger blogger = modelMapper.map(userDTO, Blogger.class);
+        blogger.setPassword(passwordEncoder.encode(blogger.getPassword()));
         Role role = roleRepository.findById(Constants.NORMAL_USER).get();
-        user.getRoles().add(role);
-        User savedUser = userRepository.save(user);
+        blogger.getRoles().add(role);
+        Blogger savedUser = userRepository.save(blogger);
         return modelMapper.map(savedUser,UserDTO.class);
     }
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
 
-        User user = this.dtoToUser(userDTO);
-        User savedUser = userRepository.save(user);
+        Blogger user = this.dtoToUser(userDTO);
+        Blogger savedUser = userRepository.save(user);
         return userToDto(savedUser);
     }
 
     @Override
     public UserDTO updateUser(UserDTO userDTO, Integer userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User"," id ", userId));
+        Blogger user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User"," id ", userId));
 
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setAbout(userDTO.getAbout());
 
-        User updateUser = userRepository.save(user);
+        Blogger updateUser = userRepository.save(user);
         return userToDto(updateUser);
     }
 
     @Override
     public UserDTO getUserById(Integer userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", " id ", userId));
+        Blogger user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", " id ", userId));
 
         return userToDto(user);
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
+        List<Blogger> users = userRepository.findAll();
 
         return users.stream().map(this::userToDto).collect(Collectors.toList());
     }
 
     @Override
     public void deleteUser(Integer userId) {
-       User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(" User ", " Id ", userId));
+       Blogger user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(" User ", " Id ", userId));
        userRepository.delete(user);
     }
 
-    private User dtoToUser(UserDTO userDTO){
-        return modelMapper.map(userDTO,User.class);
+    private Blogger dtoToUser(UserDTO userDTO){
+        return modelMapper.map(userDTO,Blogger.class);
     }
 
-    private UserDTO userToDto(User user){
+    private UserDTO userToDto(Blogger user){
         return modelMapper.map(user,UserDTO.class);
     }
 }

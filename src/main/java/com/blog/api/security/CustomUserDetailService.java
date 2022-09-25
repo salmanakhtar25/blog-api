@@ -1,6 +1,6 @@
 package com.blog.api.security;
 
-import com.blog.api.entities.User;
+
 import com.blog.api.exceptions.ResourceNotFoundException;
 import com.blog.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -12,17 +12,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "blog_user")
+@Table(name = "blogger")
 @NoArgsConstructor
 @Getter
 @Setter
-public class User implements UserDetails {
+public class Blogger implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user_name", nullable = false, length = 100)
+    @Column(name = "blogger_name", nullable = false, length = 100)
     private String name;
 
     private String email;
@@ -31,12 +31,12 @@ public class User implements UserDetails {
 
     private String about;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "blogger", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user", referencedColumnName = "id"),
+    @JoinTable(name = "blogger_role",
+            joinColumns = @JoinColumn(name = "blogger", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
 

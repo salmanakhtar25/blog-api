@@ -1,8 +1,8 @@
 package com.blog.api.service.impl;
 
+import com.blog.api.entities.Blogger;
 import com.blog.api.entities.Category;
 import com.blog.api.entities.Post;
-import com.blog.api.entities.User;
 import com.blog.api.exceptions.ResourceNotFoundException;
 import com.blog.api.payloads.PostDTO;
 import com.blog.api.payloads.PostResponse;
@@ -40,13 +40,13 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO createPost(PostDTO postDTO, Integer userId, Integer categoryId) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "User Id", userId));
+        Blogger blogger = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "User Id", userId));
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "Category Id", categoryId));
 
         Post post = modelMapper.map(postDTO, Post.class);
         post.setImageName("default.png");
         post.setAddedDate(new Date());
-        post.setUser(user);
+        post.setBlogger(blogger);
         post.setCategory(category);
 
         Post savedPost= postRepository.save(post);
@@ -102,8 +102,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDTO> getPostsByUser(Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "User Id", userId));
-        List<Post> posts = postRepository.findByUser(user);
+        Blogger blogger = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "User Id", userId));
+        List<Post> posts = postRepository.findByBlogger(blogger);
         return posts.stream().map(post -> modelMapper.map(post,PostDTO.class)).collect(Collectors.toList());
     }
 
