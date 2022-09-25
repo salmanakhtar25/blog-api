@@ -10,7 +10,6 @@ import com.blog.api.repository.CategoryRepository;
 import com.blog.api.repository.PostRepository;
 import com.blog.api.repository.UserRepository;
 import com.blog.api.service.PostService;
-import javafx.geometry.Pos;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
