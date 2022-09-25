@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "BlogUser")
+@Table(name = "blog_user")
 @NoArgsConstructor
 @Getter
 @Setter
