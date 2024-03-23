@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
@@ -36,7 +37,7 @@ public class BlogApiApplication implements CommandLineRunner {
              Role normal = new Role();
              normal.setId(Constants.NORMAL_USER);
              normal.setName("ROLE_NORMAL");
-             List<Role> roles = List.of(admin, normal);
+             List<Role> roles = Arrays.asList(admin, normal);
              roleRepository.saveAll(roles);
 
          }catch (Exception e){

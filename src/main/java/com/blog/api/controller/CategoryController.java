@@ -2,7 +2,6 @@ package com.blog.api.controller;
 
 import com.blog.api.payloads.ApiResponse;
 import com.blog.api.payloads.CategoryDTO;
-import com.blog.api.payloads.UserDTO;
 import com.blog.api.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
